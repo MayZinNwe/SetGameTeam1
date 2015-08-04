@@ -25,8 +25,6 @@ function drawRow(cardData, row) {
 
 $(function () {
     $("#btnReset").on("click", function () {
-
-
         $.getJSON("api/cards/getAllCards/")
                 .done(function (data) {
                     // To clear all rows inside the table
@@ -46,8 +44,6 @@ $(function () {
         });
     });
     $("#btnShuffle").on("click", function () {
-
-
         $.getJSON("api/cardsOnTable/getTableCards/")
                 .done(function (data) {
                     // To clear all rows inside the table
@@ -55,12 +51,12 @@ $(function () {
                     // Add row based on return data
                     var row = $("<tr />")
                     $("#table").append(row);
-                    for (var i = 0, il = data.cardsOnTable.length; i < il; i++) {
+                    for (var i = 0, il = data.cards.length; i < il; i++) {
                         if (i % 3 === 0) {
                             row = $("<tr />")
                             $("#table").append(row);
                         }
-                        drawRow(data.cardsOnTable[i], row);
+                        drawRow(data.cards[i], row);
                     }
                 }).fail(function () {
             Console.log("Not Found");
