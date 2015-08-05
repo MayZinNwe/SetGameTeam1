@@ -2,18 +2,44 @@ package com.CATest.Team1.Servlet;
 
 import com.CATest.Team1.Model.Card;
 import com.CATest.Team1.Model.CardOnDeck;
+import com.CATest.Team1.Model.Game;
+import com.CATest.Team1.Model.User;
+import com.CATest.Team1.service.GameService;
+import java.util.HashMap;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-
-@Path("/cards")
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
+// Ref : https://jersey.java.net/documentation/latest/jaxrs-resources.html#d0e2011
+@Path("/game")
+@Stateless
 public class GameServlet extends HttpServlet {
-//
+    
+    @Inject
+    GameService gameService;
+  
+    
+
+
+    @GET
+    @Produces("application/json")
+    @Path("/createNewGame")
+    public JsonObject createNewGame() {
+        Game game = gameService.createGame(new User("demo"));
+        AppConfig.games.put(game.getId(), game);
+        return game.toJson();
+    }
 
     @GET
     @Produces("application/json")
@@ -28,11 +54,10 @@ public class GameServlet extends HttpServlet {
             cards.add(card.toJson());
             i++;
         }
-        
         results.add("cards", cards.build());
         return results.build();
     }
-    
+
     @GET
     @Produces("application/json")
     @Path("/getShuffleCards")
@@ -46,7 +71,7 @@ public class GameServlet extends HttpServlet {
             cards.add(card.toJson());
             i++;
         }
-        
+
         results.add("cards", cards.build());
         return results.build();
     }
@@ -65,4 +90,19 @@ public class GameServlet extends HttpServlet {
 //        return (card.toJson());
 //
 //    }
+
+    @GET
+    @Produces(value = "application/json")
+    @Path(value = "/openExistingGame")
+    public JsonObject doOpenExistingGame(@Context UriInfo info ) {
+        String id = info.getQueryParameters().getFirst("id");
+        if(id!=null){
+            Long gameId = Long.parseLong(id);
+            if(AppConfig.games.containsKey(gameId)){
+            return AppConfig.games.get(gameId).toJson();
+        }
+        }
+        
+        return null;
+    }
 }
