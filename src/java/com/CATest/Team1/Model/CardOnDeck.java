@@ -24,7 +24,7 @@ public class CardOnDeck {
                 for (String color : colors) {
                     for (int number : numbers) {
                         imgNum++;
-                        Card card = new Card(color, symbol, shading, number);
+                        Card card = new Card(imgNum,color, symbol, shading, number);
                         imageUrl = folder + new DecimalFormat("00").format(imgNum) + ".gif";
                         card.setImageUrl(imageUrl);
                         gameCards[counter] = card;

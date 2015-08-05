@@ -2,18 +2,27 @@ package com.CATest.Team1.Model;
 
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 public class Card  {
-
+    @NotNull
+    private int id;
+    
+    @NotNull
     private String Shading;
+    
+    @NotNull
     private String Symbol;
+    
+    @NotNull
     private String Color;
+    
+    @NotNull
     private int Number;
+    
+    @NotNull
     private String imageUrl;
-    @Id
-    private Long id;
-
+    
     public String getShading() {
         return Shading;
     }
@@ -54,11 +63,20 @@ public class Card  {
         this.imageUrl = imageUrl;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     
     public Card() {
     }
 
-    public Card(String Color, String Symbol, String Shading, int Number) {
+    public Card(int id,String Color, String Symbol, String Shading, int Number) {
+        this.id=id;
         this.Color = Color;
         this.Symbol = Symbol;
         this.Shading = Shading;
@@ -67,6 +85,11 @@ public class Card  {
 
      public JsonObject toJson(){
         return(Json.createObjectBuilder()
+                .add("id", id)
+                .add("shading", Shading)
+                .add("symbol", Symbol)
+                .add("Color", Color)
+                .add("number", Number)
                 .add("imageUrl", imageUrl)
                 .build());
     }
@@ -75,15 +98,5 @@ public class Card  {
     public String toString() {
         return "Card{" + "Shading=" + Shading + ", Symbol=" + Symbol + ", Color=" + Color + ", Number=" + Number + '}';
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    
-
+ 
 }

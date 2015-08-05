@@ -5,19 +5,13 @@
  */
 package com.CATest.Team1.service;
 
-import com.CATest.Team1.Model.CardOnTable;
 import com.CATest.Team1.Model.Game;
 import com.CATest.Team1.Model.User;
-import java.util.Calendar;
-import java.util.Date;
-import javax.inject.Named;
-import javax.persistence.Id;
 
 /**
  *
  * @author MZN
  */
-@javax.enterprise.context.ApplicationScoped
 public interface GameService {
 
     /**
@@ -27,4 +21,5 @@ public interface GameService {
      */
     public Game createGame(User user);
     
+    public Game getGame(String id);
 }

@@ -1,29 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.CATest.Team1.Model;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-import javax.persistence.Id;
 
-/**
- *
- * @author MZN
- */
 public class Game {
-
-    private CardOnTable cardOnTable;
-
-    @Id
-    private Long id;
+    private String id;
     private Date createdDate;
     private User creator;
+    private CardOnTable cardOnTable;
 
     public CardOnTable getCardOnTable() {
         return cardOnTable;
@@ -33,11 +21,11 @@ public class Game {
         this.cardOnTable = cardOnTable;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -56,10 +44,9 @@ public class Game {
     public void setCreator(User creator) {
         this.creator = creator;
     }
-
     
     public Game(User creator) {
-        id = Calendar.getInstance().getTimeInMillis();
+        id = Long.toString(Calendar.getInstance().getTimeInMillis());
         cardOnTable = new CardOnTable();
         createdDate = Calendar.getInstance().getTime();
         this.creator = creator;
