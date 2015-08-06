@@ -19,6 +19,13 @@ public class SetEngine {
                 (a.getColor() != b.getColor()) && (a.getColor() != c.getColor()) && (b.getColor() != c.getColor()))) {
             return false;
         }
+        if (((a.getNumber() == b.getNumber()) && (b.getNumber() == c.getNumber()) && 
+                (a.getColor() == b.getColor()) && (b.getColor() == c.getColor()) &&
+                (a.getSymbol() == b.getSymbol()) && (b.getSymbol() == c.getSymbol()) &&
+                (a.getShading() == b.getShading()) && (b.getShading() == c.getShading())
+                )) {
+            return false;
+        }
         return true;
       
     }
