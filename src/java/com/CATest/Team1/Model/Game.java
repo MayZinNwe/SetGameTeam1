@@ -2,7 +2,6 @@ package com.CATest.Team1.Model;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.UUID;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -13,6 +12,9 @@ public class Game {
     private User creator;
     private CardOnTable cardOnTable;
 
+    public Game(){
+        
+    }
     public CardOnTable getCardOnTable() {
         return cardOnTable;
     }

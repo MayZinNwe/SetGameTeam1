@@ -11,7 +11,20 @@ package com.CATest.Team1.Model;
  */
 public class User {
     private String userName;
+    private String userPassword;
+    
+    public User() {
+    
+    }
+    
+    public String getUserPassword() {
+        return userPassword;
+    }
 
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+    
     public User(String userName) {
         this.userName = userName;
     }
