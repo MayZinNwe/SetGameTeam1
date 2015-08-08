@@ -5,6 +5,7 @@ import com.CATest.Team1.Model.CardOnTable;
 import com.CATest.Team1.Model.Game;
 import com.CATest.Team1.Model.SetEngine;
 import com.CATest.Team1.service.GameService;
+import com.CATest.Team1.service.GameServiceImpl;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -23,12 +24,12 @@ import javax.ws.rs.core.UriInfo;
 public class TableServlet extends HttpServlet {
 
     @Inject
-    GameService gameService;
+    GameServiceImpl gameService;
 
     @GET
     @Produces("application/json")
     @Path("/getTableCards")
-    public JsonObject showTableCards(@Context UriInfo info) {
+    public String showTableCards(@Context UriInfo info) {
         CardOnTable cardOnTable = null;
         String id = info.getQueryParameters().getFirst("id");
         if (id != null) {
@@ -51,13 +52,13 @@ public class TableServlet extends HttpServlet {
             cards.add(card.toJson());
         }
         results.add("cards", cards.build());
-        return results.build();
+        return results.build().toString();
     }
 
     @GET
     @Produces("application/json")
     @Path("/checkTableCards")
-    public JsonObject checkTableCards(@Context UriInfo info) {
+    public String  checkTableCards(@Context UriInfo info) {
         CardOnTable cardOnTable = null;
         String gameId = info.getQueryParameters().getFirst("id");
         int cardId1 = Integer.parseInt(info.getQueryParameters().getFirst("card1").toString());
@@ -115,7 +116,7 @@ public class TableServlet extends HttpServlet {
         results.add("status", Boolean.toString(valid));
         results.add("won", Boolean.toString(success));
         results.add("cards", cards.build());
-        return results.build();
+        return results.build().toString();
     }
 
 }
