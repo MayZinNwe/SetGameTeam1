@@ -59,7 +59,7 @@ public class GameServlet extends HttpServlet {
     //@Consumes({"application/xml", "application/json"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonObject register(User user) {
+    public String register(User user) {
         //@PathParam("username") String userName
         String userName = user.getUserName();
         String password = user.getUserPassword();
@@ -75,7 +75,7 @@ public class GameServlet extends HttpServlet {
                 json.add("error", "Duplicate user name found");
             }
         }
-        return json.build();
+        return json.build().toString();
     }
 
     @GET
