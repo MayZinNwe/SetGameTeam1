@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <script src="login.js"></script> 
+    </head>
+    <body>
+
+        <div data-role="page" id="main">
+            <div data-role="header">
+                <h1>Set Game</h1>
+            </div>
+
+            <div data-role="main" class="ui-content">
+                <form action="../api/game/login/" id="loginForm">
+                    <div class="ui-field-contain">
+                        <label for="fullname">User Name:</label>
+                        <input type="text" name="username" id="id_userName">       
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="id_password">
+                        <div align="center"><input type="submit" data-inline="true" value="Sign In"></div>
+                    </div>
+                    <div align="center"><a href="#page_registration" data-transition="slide">Register</a></div>
+                </form>
+            </div>
+            <div data-role="footer"  data-position="fixed">
+                <h1>ISS Team 1</h1>
+            </div>
+        </div>
+        <div data-role="page" id="page_registration">
+            <div data-role="header">
+                <h1>Registration Form</h1>
+                <a href="#main" data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <form method="post" action="../api/game/register" id="registrationForm">
+                    <div class="ui-field-contain">
+                        <label for="fullname">User Name:</label>
+                        <input type="text" name="username" id="id_userName">       
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="id_password">      
+                    </div>
+                    <div align="center"><input type="submit" data-inline="true" value="Register"></div>
+                </form>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <h1>ISS Team 1</h1>
+            </div>
+        </div>
+        <div data-role="page" id="page_commonview">
+            <div data-role="header">
+                <!--<a href="#main" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-left" data-rel="back"></a>-->
+                <h1>Games</h1>
+                <a href="#main" data-icon="carat-l" data-iconpos="notext" ></a>
+                <a href="#" data-icon="gear" class="ui-btn-right">Options</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <!--Ref http://demos.jquerymobile.com/1.4.5/listview/index.html#&ui-state=dialog-->
+                <ul data-role="listview" data-count-theme="b" data-inset="true">
+                    <li><a href="#">Game 1<span class="ui-li-count">12</span>
+                            <p>Created by User 1</p>
+                        </a>
+                    </li>
+                    <li><a href="#">Game 1<span class="ui-li-count">12</span>
+                            <p>Created by User 1</p>
+                        </a>
+                    </li>
+                    <li><a href="#">Game 1<span class="ui-li-count">12</span>
+                            <p>Created by User 1</p>
+                        </a>
+                    </li>
+                    <li><a href="#">Game 1<span class="ui-li-count">12</span>
+                            <p>Created by User 1</p>
+                        </a>
+                    </li><li><a href="#">Game 1<span class="ui-li-count">12</span>
+                            <p>Created by User 1</p>
+                        </a>
+                    </li>
+                </ul>  
+                <div id="id_commandview_content">
+                </div>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <h1>ISS Team 1</h1>
+            </div>
+        </div>
+    </body>
+</html>
