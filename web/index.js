@@ -1,8 +1,35 @@
 $(document).ready(function () {
-//    $.getJSON("api/cardsOnTable/getTableCards/")
-//            .done(function (data) {
-//                // To clear all rows inside the table
-//                $("#table").empty();
+
+    $.getJSON("api/game/getExistingGames/")
+            .done(function (data) {
+                // To clear all rows inside the table
+                $("#existingGameList").empty();
+                for (var index = 0, indexLength = data.games.length; index < indexLength; index++) {
+                    var game = data.games[index];
+                    addNewGameItem(game);
+                    // Add row based on return data
+                    /*
+                     <li><a href="#">
+                     <img src="images/01.gif" class="ui-li-thumb">
+                     <h2>game.id</h2>
+                     <p>Apple released iOS 6.1</p>
+                     <p class="ui-li-aside">iOS</p>
+                     </a></li>
+                     */
+
+
+                    /*
+                     var row = $("<tr id=" + game.id + "/>")
+                     $("#existingGames").append(row);
+                     row.append($("<td>" + game.id + "</td>"));
+                     row.append($("<td>" + game.creator + "</td>"));
+                     row.append($("<td>" + game.date + "</td>"));
+                     row.append($("<td><button class='btnShow' value='" + game.id + "' onclick='show(" + game.id + ")'>Show</button></td>"));
+                     */
+                }
+                $('#existingGameList').listview('refresh');
+
+
 //                // Add row based on return data
 //                var row = $("<tr />")
 //                $("#table").append(row);
@@ -13,10 +40,11 @@ $(document).ready(function () {
 //                    }
 //                    drawRow(data.cards[i], row);
 //                }
-//            }).fail(function () {
-//        Console.log("Not Found");
-//    });
+            }).fail(function () {
+        Console.log("Not Found");
+    });
 });
+
 var imageurl = new String();  // insert selecting image
 
 var imageurlpointingplace = new String();//used to place index of original place but not yet got 
@@ -26,11 +54,68 @@ var currentGame;
 var selectedCount = 0;
 var selectedCards = [3];
 
+function show(gameId) {
+    //$.getJSON("api/game/openExistingGame/?id=" + id)
+    $.mobile.navigate("#page_commonview");
+    currentGame = gameId;
+    $.getJSON("api/cardsOnTable/getTableCards/?id=" + gameId)
+            .done(function (data) {
+                showCardsOnTable("#games", data.cards);
+                showCardsOnTable("#setTable", data.setCards);
+            }).fail(function () {
+        console.log("Not Found");
+    });
+}
+;
+
+function addNewGameItem(game) {
+//    var listItem = "<li><a id='" + game.id + "' href='#'>"
+//            + "<h2>" + game.id + "</h2>"
+//            + "<p>" + game.creator + "</p>"
+//            + "<p>" + game.date + "</p>"
+//            + "</a></li>";
+//    return listItem;
+    var list = $("#existingGameList");
+    var listItem = "";
+
+    listItem += ("<li onclick='show(" + game.id + ")'>");
+    listItem += ("<a href='#'>");
+    listItem += ("<p>" + game.id + "</p>");
+    listItem += ("<p>" + game.creator + "</p>");
+    listItem += ("<p>" + game.date + "</p>");
+//  listItem += ("<button class='btnShow' value='" + game.id + "' onclick='show(" + game.id + ")'>Show</button>");
+    listItem += ("</a>");
+    listItem += ("</li>");
+    list.append($(listItem));
+}
+
+function showCardsOnTable(tableId, cards) {
+    // To clear all rows inside the table
+    $(tableId).empty();
+    if (cards) {
+        // Add row based on return data
+        var row = $("<tr width='100%' />");
+        $(tableId).append(row);
+        for (var i = 0, il = cards.length; i < il; i++) {
+            if (i % 3 === 0) {
+                row = $("<tr />");
+                $(tableId).append(row);
+            }
+            drawRow(cards[i], row);
+        }
+    }
+}
+;
+
+
 function drawRow(cardData, row) {
     //onClick='checkGameRules("+cardData.imageUrl+")'
-    row.append($("<td>" + "<input  type='image' src='/" + cardData.imageUrl
+    var cell = "<input type='checkbox' src='/" + cardData.imageUrl
             + "' id='" + cardData.id
-            + "' width='50' height='50' onclick='checkGameRules(this.id)'>" + "</td>"));
+            + "' onclick='checkGameRules(this.id)'>"
+            + "<label for='" + cardData.id + "'><img src='/" + cardData.imageUrl + "'/></label>";
+
+    row.append($("<td>" + cell + "</td>"));
     console.log(cardData.imageUrl);
     var i = 0;
     if (imagefirsturl.length >= 1) {
@@ -39,35 +124,6 @@ function drawRow(cardData, row) {
     }
     imagefirsturl[i] = cardData.imageUrl;
     console.log("this is in the imagefirsturl    " + imagefirsturl[i]);
-
-}
-;
-
-function resume(gameId) {
-    //$.getJSON("api/game/openExistingGame/?id=" + id)
-    currentGame = gameId;
-    $.getJSON("api/cardsOnTable/getTableCards/?id=" + gameId)
-            .done(function (data) {
-                showCardsOnTable("#table", data.cards);
-            }).fail(function () {
-        console.log("Not Found");
-    });
-}
-;
-
-function showCardsOnTable(tableId, cards) {
-    // To clear all rows inside the table
-    $(tableId).empty();
-    // Add row based on return data
-    var row = $("<tr />");
-    $(tableId).append(row);
-    for (var i = 0, il = cards.length; i < il; i++) {
-        if (i % 3 === 0) {
-            row = $("<tr />");
-            $(tableId).append(row);
-        }
-        drawRow(cards[i], row);
-    }
 }
 ;
 
@@ -87,10 +143,12 @@ function checkGameRules(id) {
                         // Replace the old cards with new cards
                         alert(data.status);
                         //
-                        showCardsOnTable("#table",data.cards);
-                        showCardsOnTable("#setTable",data.setCards);
+                        showCardsOnTable("#table", data.cards);
+                        showCardsOnTable("#setTable", data.setCards);
+                        $( "#panelCompletedSet" ).trigger( "updatelayout" );
+
                     } else {
-                        showCardsOnTable("#setTable",data.setCards);
+                        showCardsOnTable("#setTable", data.setCards);
                     }
                 }).fail(function () {
             console.log("Not Found");
@@ -125,17 +183,18 @@ $(function () {
         $.getJSON("api/game/getAllCards/")
                 .done(function (data) {
                     // To clear all rows inside the table
-                    $("#table").empty();
+                    $("#hintTable").empty();
                     // Add row based on return data
                     var row = $("<tr />")
-                    $("#table").append(row);
+                    $("#hintTable").append(row);
                     for (var i = 0, il = data.cards.length; i < il; i++) {
                         if (i % 3 === 0) {
                             row = $("<tr />")
-                            $("#table").append(row);
+                            $("#hintTable").append(row);
                         }
                         drawRow(data.cards[i], row);
                     }
+                    $( "#panelHintSet" ).trigger( "updatelayout" );
                 }).fail(function () {
             Console.log("Not Found");
         });
@@ -144,23 +203,25 @@ $(function () {
     $("#btnShuffle").on("click", function () {
         $.getJSON("api/game/getShuffleCards/")
                 .done(function (data) {
-                    showCardsOnTable("#table",data.cards);
+                    showCardsOnTable("#table", data.cards);
                 }).fail(function () {
             Console.log("Not Found");
         });
     });
 
     $("#btnNewGame").on("click", function () {
-
         $.getJSON("api/game/createNewGame/")
-                .done(function (data) {
-                    // Add row based on return data
-                    var row = $("<tr id=" + data.id + "/>")
-                    $("#games").append(row);
-                    row.append($("<td>" + data.id + "</td>"));
-                    row.append($("<td>" + data.creator + "</td>"));
-                    row.append($("<td>" + data.date + "</td>"));
-                    row.append($("<td><button class='btnResume' value='" + data.id + "' onclick='resume(" + data.id + ")'>Resume</button></td>"));
+                .done(function (game) {
+                    addNewGameItem(game);
+                    $('#existingGameList').listview('refresh');
+
+//                    // Add row based on return data
+//                    var row = $("<tr id=" + data.id + "/>")
+//                    $("#existingGames").append(row);
+//                    row.append($("<td>" + data.id + "</td>"));
+//                    row.append($("<td>" + data.creator + "</td>"));
+//                    row.append($("<td>" + data.date + "</td>"));
+//                    row.append($("<td><button class='btnShow' value='" + data.id + "' onclick='show(" + data.id + ")'>Show</button></td>"));
                 }).fail(function () {
             Console.log("Not Found");
         });
