@@ -1017,7 +1017,7 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${file.reference.jersey-bundle-1.19.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${file.reference.jsr311-api-1.1.1.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${file.reference.jackson-core-asl-1.9.13.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
-        <copyfiles files="${libs.CORS.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <!--<copyfiles files="${libs.CORS.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>-->
     </target>
     <target depends="init" if="dist.ear.dir" name="-clean-webinf-lib">
         <delete dir="${build.web.dir}/WEB-INF/lib"/>

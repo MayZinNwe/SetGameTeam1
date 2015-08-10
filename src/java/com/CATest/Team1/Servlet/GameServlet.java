@@ -38,7 +38,7 @@ public class GameServlet extends HttpServlet {
     //@Consumes({"application/xml", "application/json"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonObject login(User user) {
+    public String login(User user) {
         //@PathParam("username") String userName
         String userName = user.getUserName();
         String password = user.getUserPassword();
@@ -51,7 +51,7 @@ public class GameServlet extends HttpServlet {
                 json.add("error", "User name was not found");
             }
         }
-        return json.build();
+        return json.build().toString();
     }
     
     @POST
@@ -74,6 +74,26 @@ public class GameServlet extends HttpServlet {
                 json.add("success", false);
                 json.add("error", "Duplicate user name found");
             }
+        }
+        return json.build().toString();
+    }
+    
+    @POST
+    @Path("/createGame")
+    //@Consumes({"application/xml", "application/json"})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
+    public String createGame(Game game) {
+        //@PathParam("username") String userName
+        String description = game.getDescription();
+        int maximumPlayer = game.getMaximumPlayer();
+        JsonObjectBuilder json = Json.createObjectBuilder();
+        if (description != null && maximumPlayer >=0) {
+            Game newGame = gameService.createGame(new User(game.getCreator()));
+            newGame.setDescription(description);
+            newGame.setMaximumPlayer(maximumPlayer);
+            newGame.toJson().toString();
+            json.add("success", true);
         }
         return json.build().toString();
     }
