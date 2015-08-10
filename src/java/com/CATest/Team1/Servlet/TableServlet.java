@@ -81,7 +81,6 @@ public class TableServlet extends HttpServlet {
             if (card1 != null && card2 != null & card3 != null) {
                 SetEngine setEngine = new SetEngine();
                 valid = setEngine.isSet(card1, card2, card3);
-//                valid=true;
                 if (valid == true) {
                     //Remove the 3 cards and Replace the 3 cards at the same place
                     cardOnTable.setNewCardOnTable(card1);

@@ -14,6 +14,7 @@ function show(gameId) {
     currentGame = gameId;
     $.getJSON("api/cardsOnTable/getTableCards/?id=" + gameId)
             .done(function (data) {
+                $("#id_current_game").empty();
                 $("#id_current_game").append(currentGame);
                 showCardsOnTable("#games", data.cards);
                 showCardsOnTable("#setTable", data.setCards);
@@ -121,7 +122,7 @@ function checkGameRules(id) {
                         // Replace the old cards with new cards
                         alert(data.status);
                         //
-                        showCardsOnTable("#table", data.cards);
+                        showCardsOnTable("#games", data.cards);
                         showCardsOnTable("#setTable", data.setCards);
                         $("#panelCompletedSet").trigger("updatelayout");
 
