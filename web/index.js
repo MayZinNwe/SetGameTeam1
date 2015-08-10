@@ -1,48 +1,5 @@
 $(document).ready(function () {
 
-    $.getJSON("api/game/getExistingGames/")
-            .done(function (data) {
-                // To clear all rows inside the table
-                $("#existingGameList").empty();
-                for (var index = 0, indexLength = data.games.length; index < indexLength; index++) {
-                    var game = data.games[index];
-                    addNewGameItem(game);
-                    // Add row based on return data
-                    /*
-                     <li><a href="#">
-                     <img src="images/01.gif" class="ui-li-thumb">
-                     <h2>game.id</h2>
-                     <p>Apple released iOS 6.1</p>
-                     <p class="ui-li-aside">iOS</p>
-                     </a></li>
-                     */
-
-
-                    /*
-                     var row = $("<tr id=" + game.id + "/>")
-                     $("#existingGames").append(row);
-                     row.append($("<td>" + game.id + "</td>"));
-                     row.append($("<td>" + game.creator + "</td>"));
-                     row.append($("<td>" + game.date + "</td>"));
-                     row.append($("<td><button class='btnShow' value='" + game.id + "' onclick='show(" + game.id + ")'>Show</button></td>"));
-                     */
-                }
-                $('#existingGameList').listview('refresh');
-
-
-//                // Add row based on return data
-//                var row = $("<tr />")
-//                $("#table").append(row);
-//                for (var i = 0, il = data.cards.length; i < il; i++) {
-//                    if (i % 3 === 0) {
-//                        row = $("<tr />")
-//                        $("#table").append(row);
-//                    }
-//                    drawRow(data.cards[i], row);
-//                }
-            }).fail(function () {
-        Console.log("Not Found");
-    });
 });
 
 var imageurl = new String();  // insert selecting image
@@ -67,6 +24,22 @@ function show(gameId) {
     });
 }
 ;
+
+function showAllExistingGames() {
+    $.getJSON("api/game/getExistingGames/")
+            .done(function (data) {
+                // To clear all rows inside the table
+                $("#existingGameList").empty();
+                for (var index = 0, indexLength = data.games.length; index < indexLength; index++) {
+                    var game = data.games[index];
+                    addNewGameItem(game);
+                }
+                //$('#existingGameList').listview();
+                $('#existingGameList').listview('refresh');
+            }).fail(function () {
+        Console.log("Not Found");
+    });
+}
 
 function addNewGameItem(game) {
 //    var listItem = "<li><a id='" + game.id + "' href='#'>"
@@ -110,7 +83,7 @@ function showCardsOnTable(tableId, cards) {
 
 function drawRow(cardData, row) {
     //onClick='checkGameRules("+cardData.imageUrl+")'
-    var cell = "<input type='checkbox' src='/" + cardData.imageUrl
+    var cell = "<input type='button' src='/" + cardData.imageUrl
             + "' id='" + cardData.id
             + "' onclick='checkGameRules(this.id)'>"
             + "<label for='" + cardData.id + "'><img src='/" + cardData.imageUrl + "'/></label>";
@@ -145,7 +118,7 @@ function checkGameRules(id) {
                         //
                         showCardsOnTable("#table", data.cards);
                         showCardsOnTable("#setTable", data.setCards);
-                        $( "#panelCompletedSet" ).trigger( "updatelayout" );
+                        $("#panelCompletedSet").trigger("updatelayout");
 
                     } else {
                         showCardsOnTable("#setTable", data.setCards);
@@ -194,7 +167,7 @@ $(function () {
                         }
                         drawRow(data.cards[i], row);
                     }
-                    $( "#panelHintSet" ).trigger( "updatelayout" );
+                    $("#panelHintSet").trigger("updatelayout");
                 }).fail(function () {
             Console.log("Not Found");
         });
@@ -210,10 +183,14 @@ $(function () {
     });
 
     $("#btnNewGame").on("click", function () {
+        
+    });
+
+    $("#btnNewGame").on("click", function () {
         $.getJSON("api/game/createNewGame/")
                 .done(function (game) {
                     addNewGameItem(game);
-                    $('#existingGameList').listview('refresh');
+                    showAllExistingGames();
 
 //                    // Add row based on return data
 //                    var row = $("<tr id=" + data.id + "/>")

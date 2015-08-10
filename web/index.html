@@ -6,13 +6,58 @@
         <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
         <script src="index.js"></script> 
+        <script src="login.js"></script>
         <link rel="stylesheet" href="index.css">
     </head>
     <body>
         <div data-role="page" id="main">
             <div data-role="header" data-position="fixed">
                 <h1>Set Game</h1>
-                <button id="btnNewGame">New Game</button>
+            </div>
+            <div data-role="main" class="ui-content">
+                 <form action="api/game/login/" id="loginForm">
+                    <div class="ui-field-contain">
+                        <label for="fullname">User Name:</label>
+                        <input type="text" name="username" id="id_userName">       
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="id_password">
+                        <div align="center"><input type="submit" data-inline="true" value="Sign In"></div>
+                    </div>
+                    <div align="center"><a href="#page_registration" data-transition="slide">Register</a></div>
+                    <div id="id_error_message" align="center"></div>
+                </form>
+            </div>
+            <div data-role="footer"  data-position="fixed">
+                <h1>ISS Team 1</h1>
+            </div>
+        </div>
+        <div data-role="page" id="page_registration">
+            <div data-role="header">
+                <h1>Registration Form</h1>
+                <a href="#main" data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <form method="post" action="api/game/register/" id="registrationForm">
+                    <div class="ui-field-contain">
+                        <label for="fullname">User Name:</label>
+                        <input type="text" name="username" id="id_userName">       
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="id_password">      
+                    </div>
+                    <div align="center"><input type="submit" data-inline="true" value="Register"></div>
+                </form>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <h1>ISS Team 1</h1>
+            </div>
+        </div>
+        <div data-role="page" id="page_dashboard">
+            <div data-role="header" data-position="fixed">
+                <h1>Set Game</h1>
+                <div class="ui-btn-right">
+                <a id="btnNewGame" data-icon="plus" class="ui-btn ui-shadow ui-corner-all ui-icon-plus ui-btn-icon-notext"></a>    
+                <a id="btnLogout" href="#main" data-icon="power" class="ui-btn ui-shadow ui-corner-all ui-icon-power ui-btn-icon-notext"></a>    
+                </div>
             </div>
             <div data-role="main" class="ui-content">
                 <ul id="existingGameList" data-role="listview">
@@ -38,7 +83,6 @@
                 <!--<a href="#main" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-left" data-rel="back"></a>-->
                 <h1>Games</h1>
                 <a href="#" data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
-                <a href="#" data-icon="gear" class="ui-btn-right">Options</a>
             </div>
             <div data-role="main" class="ui-content">
                 <table id="games" border="1" height="100%">
@@ -48,7 +92,7 @@
             <div data-role="footer" data-position="fixed">
                 <h1>ISS Team 1</h1>
                 <a href="#panelCompletedSet" data-icon="gear" class="ui-btn-left">Completed Set</a>
-                <a href="#panelHintSet" data-icon="gear" class="ui-btn-right" id="btnHint">Show Hint</a>
+                <a href="#panelHintSet" data-icon="eye" class="ui-btn-right" id="btnHint">Show Hint</a>
             </div>
         </div>
         <div data-role="page" id="page_test">
