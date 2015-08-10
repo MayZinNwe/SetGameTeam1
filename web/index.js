@@ -122,7 +122,7 @@ function checkGameRules(id) {
                         // Replace the old cards with new cards
                         alert(data.status);
                         //
-                        showCardsOnTable("#table", data.cards);
+                        showCardsOnTable("#games", data.cards);
                         showCardsOnTable("#setTable", data.setCards);
                         $("#panelCompletedSet").trigger("updatelayout");
 
