@@ -10,6 +10,7 @@
         <script src="lib/jquery.mobile-1.4.5.js"></script>
         <script src="index.js"></script> 
         <script src="login.js"></script>
+        <script src="game.js"></script>
         <link rel="stylesheet" href="index.css">
     </head>
     <body>
@@ -58,7 +59,7 @@
             <div data-role="header" data-position="fixed">
                 <h1>Set Game</h1>
                 <div class="ui-btn-right">
-                <a id="btnNewGame" data-icon="plus" class="ui-btn ui-shadow ui-corner-all ui-icon-plus ui-btn-icon-notext"></a>    
+                <a id="btnNewGame" data-icon="plus" class="ui-btn ui-shadow ui-corner-all ui-icon-plus">New Game</a>    
                 <a id="btnLogout" href="#main" data-icon="power" class="ui-btn ui-shadow ui-corner-all ui-icon-power ui-btn-icon-notext"></a>    
                 </div>
             </div>
@@ -66,6 +67,25 @@
                 <ul id="existingGameList" data-role="listview">
 
                 </ul>
+            </div>
+            <div data-role="footer"  data-position="fixed">
+                <h1>ISS Team 1</h1>
+            </div>
+        </div>
+        <div data-role="page" id="page_gameEntry">
+            <div data-role="header" data-position="fixed">
+                <h1>Set Game</h1>
+            </div>
+            <div data-role="main" class="ui-content">
+                 <form action="api/game/createGame/" id="gameEntryForm">
+                    <div class="ui-field-contain">
+                        <label for="fullname">Description :</label>
+                        <input type="text" name="description" id="id_description">       
+                        <label for="password">Maximum Player :</label>
+                        <input type="number" name="maximumplayer" id="id_maxplayer">
+                        <div align="center"><input type="submit" data-inline="true" value="Create New Game"></div>
+                    </div>
+                </form>
             </div>
             <div data-role="footer"  data-position="fixed">
                 <h1>ISS Team 1</h1>
@@ -88,7 +108,8 @@
                 <a href="#" data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
             </div>
             <div data-role="main" class="ui-content">
-                <table id="games" border="1" height="100%">
+                <h1 id="id_current_game"></h1>
+                <table id="games" border="1">
 
                 </table>
             </div>

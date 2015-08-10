@@ -1,13 +1,10 @@
-$(document).ready(function () {
-
-});
-
 var imageurl = new String();  // insert selecting image
 
 var imageurlpointingplace = new String();//used to place index of original place but not yet got 
 var imagefirsturl = new String();  //original images with original indexes but not yet done
 
 var currentGame;
+var currentUser;
 var selectedCount = 0;
 var selectedCards = [3];
 
@@ -17,6 +14,7 @@ function show(gameId) {
     currentGame = gameId;
     $.getJSON("api/cardsOnTable/getTableCards/?id=" + gameId)
             .done(function (data) {
+                $("#id_current_game").append(currentGame);
                 showCardsOnTable("#games", data.cards);
                 showCardsOnTable("#setTable", data.setCards);
             }).fail(function () {
@@ -53,9 +51,10 @@ function addNewGameItem(game) {
 
     listItem += ("<li onclick='show(" + game.id + ")'>");
     listItem += ("<a href='#'>");
-    listItem += ("<p>" + game.id + "</p>");
-    listItem += ("<p>" + game.creator + "</p>");
-    listItem += ("<p>" + game.date + "</p>");
+    listItem += ("<h1>" + game.description + "("+game.id+ ")</h1>");
+    listItem += ("<p> Maximum Players : " + game.maximumPlayer+ "</p>");
+    listItem += ("<p> Created By : " + game.creator + "</p>");
+    listItem += ("<p> Created Date :" + game.date + "</p>");
 //  listItem += ("<button class='btnShow' value='" + game.id + "' onclick='show(" + game.id + ")'>Show</button>");
     listItem += ("</a>");
     listItem += ("</li>");
@@ -83,10 +82,7 @@ function showCardsOnTable(tableId, cards) {
 
 function drawRow(cardData, row) {
     //onClick='checkGameRules("+cardData.imageUrl+")'
-    var cell = "<input type='button' src='/" + cardData.imageUrl
-            + "' id='" + cardData.id
-            + "' onclick='checkGameRules(this.id)'>"
-            + "<label for='" + cardData.id + "'><img src='/" + cardData.imageUrl + "'/></label>";
+    var cell = "<a id='" + cardData.id + "' onclick='checkGameRules(this.id)'><img src='/" + cardData.imageUrl + "'/></a>";
 
     row.append($("<td>" + cell + "</td>"));
     console.log(cardData.imageUrl);
@@ -100,6 +96,15 @@ function drawRow(cardData, row) {
 }
 ;
 
+function createNewGame(game){
+      $.getJSON("api/game/createNewGame/")
+                .done(function (game) {
+                    addNewGameItem(game);
+                    showAllExistingGames();
+                }).fail(function () {
+            Console.log("Not Found");
+        });
+}
 function checkGameRules(id) {
     selectedCount++;
     selectedCards[selectedCount - 1] = id;
@@ -183,24 +188,8 @@ $(function () {
     });
 
     $("#btnNewGame").on("click", function () {
-        
-    });
+      $.mobile.navigate( "#page_gameEntry" );
 
-    $("#btnNewGame").on("click", function () {
-        $.getJSON("api/game/createNewGame/")
-                .done(function (game) {
-                    addNewGameItem(game);
-                    showAllExistingGames();
-
-//                    // Add row based on return data
-//                    var row = $("<tr id=" + data.id + "/>")
-//                    $("#existingGames").append(row);
-//                    row.append($("<td>" + data.id + "</td>"));
-//                    row.append($("<td>" + data.creator + "</td>"));
-//                    row.append($("<td>" + data.date + "</td>"));
-//                    row.append($("<td><button class='btnShow' value='" + data.id + "' onclick='show(" + data.id + ")'>Show</button></td>"));
-                }).fail(function () {
-            Console.log("Not Found");
-        });
+      
     });
 });

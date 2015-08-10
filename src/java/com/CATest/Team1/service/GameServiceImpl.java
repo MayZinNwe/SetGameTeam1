@@ -52,7 +52,7 @@ public class GameServiceImpl implements GameService{
     
     @Override
     public Game createGame(User user) {
-        Game game = new Game(user);
+        Game game = new Game(user.getUserName());
         games.put(game.getId(), game);
         return game;
     }

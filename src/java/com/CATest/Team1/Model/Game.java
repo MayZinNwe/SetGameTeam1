@@ -1,5 +1,6 @@
 package com.CATest.Team1.Model;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import javax.json.Json;
@@ -9,8 +10,26 @@ import javax.json.JsonObjectBuilder;
 public class Game {
     private String id;
     private Date createdDate;
-    private User creator;
+    private String creator;
     private CardOnTable cardOnTable;
+    private String description;
+    private int maximumPlayer;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getMaximumPlayer() {
+        return maximumPlayer;
+    }
+
+    public void setMaximumPlayer(int maximumPlayer) {
+        this.maximumPlayer = maximumPlayer;
+    }
 
     public Game(){
         
@@ -39,15 +58,15 @@ public class Game {
         this.createdDate = createdDate;
     }
 
-    public User getCreator() {
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(User creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
     
-    public Game(User creator) {
+    public Game(String creator) {
         id = Long.toString(Calendar.getInstance().getTimeInMillis());
         cardOnTable = new CardOnTable();
         createdDate = Calendar.getInstance().getTime();
@@ -57,14 +76,16 @@ public class Game {
     public JsonObject toJson() {
         JsonObjectBuilder gameData = Json.createObjectBuilder();
         gameData.add("id", id);
-        gameData.add("creator", creator.getUserName());
+        gameData.add("creator", creator);
         gameData.add("date", createdDate.toString());
+        gameData.add("description", description);
+        gameData.add("maximumPlayer", maximumPlayer);
         return gameData.build();
     }
 
     @Override
     public String toString() {
-        return "Game{" + "cardOnTable=" + cardOnTable + ", id=" + id + ", createdDate=" + createdDate + ", creator=" + creator + '}';
+        return "Game{" + "id=" + id + ", createdDate=" + createdDate + ", creator=" + creator + ", cardOnTable=" + cardOnTable + ", description=" + description + ", maximumPlayer=" + maximumPlayer + '}';
     }
 
 }
