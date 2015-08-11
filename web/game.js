@@ -1,6 +1,9 @@
 $(document).ready(function () {
     $("#gameEntryForm").submit(function (event) {
-
+        if(!currentUser){
+            alert("Please log in again");
+            return;
+        }
         // Stop form from submitting normally
         event.preventDefault();
         // Get some values from elements on the page:
@@ -41,21 +44,30 @@ var currentUser;
 var selectedCount = 0;
 var selectedCards = [3];
 
+var myVar = setInterval(function () {
+    showCurrentGame()
+}, 1000);
+
 function show(gameId) {
-    //$.getJSON("api/game/openExistingGame/?id=" + id)
-    $.mobile.navigate("#page_commonview");
     currentGame = gameId;
-    $.getJSON("api/cardsOnTable/getTableCards/?id=" + gameId)
-            .done(function (data) {
-                $("#id_current_game").empty();
-                $("#id_current_game").append(currentGame);
-                showCardsOnTable("#games", data.cards);
-                showCardsOnTable("#setTable", data.setCards);
-            }).fail(function () {
-        console.log("Not Found");
-    });
 }
 ;
+
+function showCurrentGame() {
+    if (currentGame) {
+        $.mobile.navigate("#page_commonview");
+        $.getJSON("api/cardsOnTable/getTableCards/?id=" + currentGame)
+                .done(function (data) {
+                    $("#id_current_game").empty();
+                    $("#id_current_game").append(currentGame);
+                    showCardsOnTable("#games", data.cards);
+                    showCardsOnTable("#setTable", data.setCards);
+                }).fail(function () {
+            console.log("Not Found");
+        });
+    }
+}
+
 
 function showAllExistingGames() {
     $.getJSON("api/game/getExistingGames/")
@@ -116,7 +128,7 @@ function showCardsOnTable(tableId, cards) {
 
 function drawRow(cardData, row) {
     //onClick='checkGameRules("+cardData.imageUrl+")'
-    var cell = "<a id='" + cardData.id + "' onclick='checkGameRules(this.id)'><img src='/" + cardData.imageUrl + "'/></a>";
+    var cell = "<a id='" + cardData.id + "' onclick='checkGameRules(this.id)'><img src='" + cardData.imageUrl + "'/></a>";
 
     row.append($("<td>" + cell + "</td>"));
     console.log(cardData.imageUrl);
@@ -139,6 +151,7 @@ function createNewGame(game){
             Console.log("Not Found");
         });
 }
+
 function checkGameRules(id) {
     selectedCount++;
     selectedCards[selectedCount - 1] = id;
@@ -157,8 +170,6 @@ function checkGameRules(id) {
                         //
                         showCardsOnTable("#games", data.cards);
                         showCardsOnTable("#setTable", data.setCards);
-                        $("#panelCompletedSet").trigger("updatelayout");
-
                     } else {
                         showCardsOnTable("#setTable", data.setCards);
                     }
@@ -222,9 +233,16 @@ $(function () {
     });
 
     $("#btnNewGame").on("click", function () {
-      $.mobile.navigate( "#page_gameEntry" );
-
-      
+      $.mobile.navigate( "#page_gameEntry" );      
+    });
+    
+    $("#btnRefresh").on("click", function () {
+        showAllExistingGames();
+    });
+    
+    $("#id_back_to_dashboard").on("click", function () {
+        currentGame=null;
+        $.mobile.navigate("#page_dashboard");
     });
 });
 

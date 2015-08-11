@@ -43,6 +43,7 @@ public class TableServlet extends HttpServlet {
         //cardOnDeck.getCards();
         JsonObjectBuilder results = Json.createObjectBuilder();
         JsonArrayBuilder cards = Json.createArrayBuilder();
+        JsonArrayBuilder setCards = Json.createArrayBuilder();
         if (id != null) {
             Game game = (gameService.getGame(id));
             cardOnTable = game.getCardOnTable();
@@ -51,14 +52,20 @@ public class TableServlet extends HttpServlet {
         for (Card card : cardOnTable.tableCard) {
             cards.add(card.toJson());
         }
+        for (Card card : cardOnTable.setGameCard) {
+            if (card != null) {
+                setCards.add(card.toJson());
+            }
+        }
         results.add("cards", cards.build());
+        results.add("setCards", setCards);
         return results.build().toString();
     }
 
     @GET
     @Produces("application/json")
     @Path("/checkTableCards")
-    public String  checkTableCards(@Context UriInfo info) {
+    public String checkTableCards(@Context UriInfo info) {
         CardOnTable cardOnTable = null;
         String gameId = info.getQueryParameters().getFirst("id");
         int cardId1 = Integer.parseInt(info.getQueryParameters().getFirst("card1").toString());
@@ -95,7 +102,7 @@ public class TableServlet extends HttpServlet {
                             success = false;
                         }
                     }
-                }else{
+                } else {
                     for (Card card : cardOnTable.setGameCard) {
                         if (card != null) {
                             setCards.add(card.toJson());
