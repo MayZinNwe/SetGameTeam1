@@ -91,7 +91,7 @@ function showCardsOnTable(tableId, cards) {
 
 function drawRow(cardData, row) {
     //onClick='checkGameRules("+cardData.imageUrl+")'
-    var cell = "<a id='" + cardData.id + "' onclick='checkGameRules(this.id)'><img src='/" + cardData.imageUrl + "'/></a>";
+    var cell = "<a id='" + cardData.id + "' onclick='checkGameRules(this.id)'><img src='" + cardData.imageUrl + "'/></a>";
 
     row.append($("<td>" + cell + "</td>"));
     console.log(cardData.imageUrl);

@@ -10,6 +10,9 @@
 <project name="SetGameTeam1" default="default" basedir=".">
     <description>Builds, tests, and runs the project SetGameTeam1.</description>
     <import file="nbproject/build-impl.xml"/>
+    <target name="-pre-dist">
+        <delete file="build/web/WEB-INF/lib/jersey-bundle-1.19.jar"/>
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 
