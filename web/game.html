@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">-->
+        <link rel="stylesheet" href="lib/jquery.mobile-1.4.5.css">
+        <!--<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>-->
+        <script src="lib/jquery-2.1.4.js"></script>
+        <!--<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
+        <script src="lib/jquery.mobile-1.4.5.js"></script>
+        <script src="game.js"></script> 
+        <script src="login.js"></script>
+        <link rel="stylesheet" href="game.css">
+    </head>
+    <body>
+        
+        <div data-role="page" id="main">
+            <div data-role="header">
+                <h1>Log In</h1>
+                <a href="#main" data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <form action="api/game/login/" id="loginForm">
+                    <label for="fullname">User Name:</label>
+                    <input type="text" name="username" id="id_userName">       
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" id="id_password">
+                    <div align="center"><input type="submit" data-inline="true" value="Sign In"></div>
+                </form>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <h1>ISS Team 1</h1>
+            </div>
+        </div>
+        <div data-role="page" id="page_dashboard">
+            <div data-role="header" data-position="fixed">
+                <h1>Set Game</h1>
+                <div class="ui-btn-right">
+                    <a id="btnNewGame" data-icon="plus" class="ui-btn ui-shadow ui-corner-all ui-icon-plus">New Game</a>    
+                    <a id="btnLogout" href="#main" data-icon="power" class="ui-btn ui-shadow ui-corner-all ui-icon-power ui-btn-icon-notext"></a>    
+                </div>
+            </div>
+            <div data-role="main" class="ui-content">
+                <ul id="existingGameList" data-role="listview">
+
+                </ul>
+            </div>
+            <div data-role="footer"  data-position="fixed">
+                <h1>ISS Team 1</h1>
+            </div>
+        </div>
+        <div data-role="page" id="page_registration">
+            <div data-role="header">
+                <h1>Registration Form</h1>
+                <a href="#main" data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <form method="post" action="api/game/register/" id="registrationForm">
+                    <div class="ui-field-contain">
+                        <label for="fullname">User Name:</label>
+                        <input type="text" name="username" id="id_userName">       
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="id_password">      
+                    </div>
+                    <div align="center"><input type="submit" data-inline="true" value="Register"></div>
+                </form>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <h1>ISS Team 1</h1>
+            </div>
+        </div>
+
+        <div data-role="page" id="page_gameEntry">
+            <div data-role="header" data-position="fixed">
+                <h1>Set Game</h1>
+            </div>
+            <div data-role="main" class="ui-content">
+                <form action="api/game/createGame/" id="gameEntryForm">
+                    <div class="ui-field-contain">
+                        <label for="fullname">Description :</label>
+                        <input type="text" name="description" id="id_description">       
+                        <label for="password">Maximum Player :</label>
+                        <input type="number" name="maximumplayer" id="id_maxplayer">
+                        <div align="center"><input type="submit" data-inline="true" value="Create New Game"></div>
+                    </div>
+                </form>
+            </div>
+            <div data-role="footer"  data-position="fixed">
+                <h1>ISS Team 1</h1>
+            </div>
+        </div>
+        <div data-role="page" id="page_commonview">
+            <div data-role="panel" id="panelCompletedSet">
+                <table id="setTable" border="1">
+
+                </table>
+            </div><!-- /panel -->
+            <div data-role="panel" id="panelHintSet" data-position="right">
+                <table id="hintTable" border="1">
+
+                </table>
+            </div><!-- /panel -->
+            <div data-role="header" data-position="fixed">
+                <!--<a href="#main" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-left" data-rel="back"></a>-->
+                <h1>Games</h1>
+                <a href="#" data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <h1 id="id_current_game"></h1>
+                <table id="games" border="1">
+
+                </table>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <h1>ISS Team 1</h1>
+                <a href="#panelCompletedSet" data-icon="gear" class="ui-btn-left">Completed Set</a>
+                <a href="#panelHintSet" data-icon="eye" class="ui-btn-right" id="btnHint">Show Hint</a>
+            </div>
+        </div>
+        <div data-role="page" id="page_test">
+            <div data-role="header" data-position="fixed">
+                <!--<a href="#main" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-left" data-rel="back"></a>-->
+                <h1>Games</h1>
+                <a href="#" data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
+                <a href="#" data-icon="gear" class="ui-btn-right">Options</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <ul data-role="listview" data-inset="true">
+                    <li><a href="#">
+                            <img src="images/01.gif" class="ui-li-thumb">
+                            <h2>iOS 6.1</h2>
+                            <p>Apple released iOS 6.1</p>
+                            <p class="ui-li-aside">iOS</p>
+                        </a></li>
+                    <li><a href="#">
+                            <img src="images/01.gif" class="ui-li-thumb">
+                            <h2>BlackBerry 10</h2>
+                            <p>BlackBerry launched the Z10 and Q10 with the new BB10 OS</p>
+                            <p class="ui-li-aside">BlackBerry</p>
+                        </a></li>
+                    <li><a href="#">
+                            <img src="images/01.gif" class="ui-li-thumb">
+                            <h2>WP 7.8</h2>
+                            <p>Nokia rolls out WP 7.8 to Lumia 800</p>
+                            <p class="ui-li-aside">Windows Phone</p>
+                        </a></li>
+                    <li><a href="#">
+                            <img src="images/01.gif" class="ui-li-thumb">
+                            <h2>Galaxy</h2>
+                            <p>New Samsung Galaxy Express</p>
+                            <p class="ui-li-aside">Samsung</p>
+                        </a></li>
+                    <li><a href="#">
+                            <img src="images/01.gif" class="ui-li-thumb">
+                            <h2>Nexus 7</h2>
+                            <p>Rumours about new full HD Nexus 7</p>
+                            <p class="ui-li-aside">Android</p>
+                        </a></li>
+                    <li><a href="#">
+                            <img src="images/01.gif" class="ui-li-thumb">
+                            <h2>Firefox OS</h2>
+                            <p>ZTE to launch Firefox OS smartphone at MWC</p>
+                            <p class="ui-li-aside">Firefox</p>
+                        </a></li>
+                    <li><a href="#">
+                            <img src="images/01.gif" class="ui-li-thumb">
+                            <h2>Tizen</h2>
+                            <p>First Samsung phones with Tizen can be expected in 2013</p>
+                            <p class="ui-li-aside">Tizen</p>
+                        </a></li>
+                </ul>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <h1>ISS Team 1</h1>
+            </div>
+        </div>
+    </body>
+</html>

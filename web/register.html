@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Login PHP</title>
+        <link rel="stylesheet" href="css/loginstyle.css" />
+        <link href='http://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
+        <!-- LOG IN SCRIPT-->        
+        <!-- JQUERY LIBRARY -->
+        <link rel="stylesheet" href="lib/jquery.mobile-1.4.5.css">
+        <!--<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>-->
+        <script src="lib/jquery-2.1.4.js"></script>
+        <!--<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
+        <script src="lib/jquery.mobile-1.4.5.js"></script>
+        <script src="game.js"></script> 
+        <script src="login.js"></script>
+    </head>
+    <body>
+        <div class="lg-container">
+            <h1>Log In</h1>
+            <!--<form action="api/game/login/" id="loginForm" name="loginForm" method=“get” action=“loginServlet”>-->
+            <form method="post" action="api/game/register/" id="registrationForm">
+                    <div class="ui-field-contain">
+                        <label for="fullname">User Name:</label>
+                        <input type="text" name="username" id="id_userName">       
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="id_password">      
+                    </div>
+                    <div align="center"><input type="submit" data-inline="true" value="Register"></div>
+                </form>
+            <div id="message"></div>
+        </div>
+
+    </body>
+</html>
