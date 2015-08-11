@@ -12,7 +12,7 @@ public class CardOnDeck {
 
         int counter = 0;
         String imageUrl;
-        String folder = "setgame/images/";
+        String folder = "images/";
         int imgNum = 0;
         final String[] colors = {"Red", "Purple", "Green"};
         final String[] symbols = {"Squiggle", "Diamond", "Oval"};
