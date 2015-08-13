@@ -17,6 +17,7 @@ import java.util.Collection;
 public interface GameService extends  BaseService {
 
     public boolean addUser(User user);
+    public User getUser(String userName);
     public boolean isValid(User user);
     public Collection<User> getAllUsers();
     public Game createGame(User user);

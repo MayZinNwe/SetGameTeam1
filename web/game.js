@@ -13,7 +13,7 @@ $(document).ready(function () {
                 url = $form.attr("action");
         var data = {description: description, maximumPlayer: maximumPlayer, creator : currentUser};
 
-        alert(JSON.stringify(data));
+        //alert(JSON.stringify(data));
         // Send the data using post
         $.ajax({
             type: "POST"
@@ -43,7 +43,8 @@ var currentGame;
 var currentUser;
 var selectedCount = 0;
 var selectedCards = [3];
-
+var selectedImageCards = [];
+var cardsOnTable=[];
 var myVar = setInterval(function () {
     showCurrentGame()
 }, 1000);
@@ -56,12 +57,14 @@ function show(gameId) {
 function showCurrentGame() {
     if (currentGame) {
         $.mobile.navigate("#page_commonview");
-        $.getJSON("api/cardsOnTable/getTableCards/?id=" + currentGame)
+        $.getJSON("api/cardsOnTable/getTableCards/?id=" + currentGame + "&userName=" +currentUser )
                 .done(function (data) {
                     $("#id_current_game").empty();
                     $("#id_current_game").append(currentGame);
+                    cardsOnTable = data.cards;
                     showCardsOnTable("#games", data.cards);
                     showCardsOnTable("#setTable", data.setCards);
+                    showUsersOnTable("#userList", data.onlineUsers);
                 }).fail(function () {
             console.log("Not Found");
         });
@@ -101,6 +104,7 @@ function addNewGameItem(game) {
     listItem += ("<p> Maximum Players : " + game.maximumPlayer+ "</p>");
     listItem += ("<p> Created By : " + game.creator + "</p>");
     listItem += ("<p> Created Date :" + game.date + "</p>");
+    listItem += ("<p> Players :" + game.userCount + "</p>");
 //  listItem += ("<button class='btnShow' value='" + game.id + "' onclick='show(" + game.id + ")'>Show</button>");
     listItem += ("</a>");
     listItem += ("</li>");
@@ -125,7 +129,35 @@ function showCardsOnTable(tableId, cards) {
 }
 ;
 
+function showUsersOnTable(tableId, onlineUsers) {
+    // To clear all rows inside the table
+    $(tableId).empty();
+    if (onlineUsers) {
+        // Add row based on return data
+        var row = $("<tr width='100%' />");
+        $(tableId).append(row);
+        var list = $("#userList");
+        var listItems = "";
+        for (var i = 0, il = onlineUsers.length; i < il; i++) {
+            if (i % 3 === 0) {
+                row = $("<tr />");
+                $(tableId).append(row);
+            }
+            listItems=drawUser(onlineUsers[i], listItems);
+        }
+        list.append(listItems);
+    }
+};
 
+
+function drawUser(userData, listItems) {
+    listItems += ("<li>");
+    listItems += ("<a href='#'>");
+    listItems += ("<h1>" + userData.name+ "("+userData.score+ ")</h1>");
+    listItems += ("</a>");
+    listItems += ("</li>");
+    return listItems;
+};
 function drawRow(cardData, row) {
     //onClick='checkGameRules("+cardData.imageUrl+")'
     var cell = "<a id='" + cardData.id + "' onclick='checkGameRules(this.id)'><img src='" + cardData.imageUrl + "'/></a>";
@@ -153,20 +185,30 @@ function createNewGame(game){
 }
 
 function checkGameRules(id) {
+    for (var j = 0; j <= selectedCards.length; j++) {
+        var selectedId=selectedCards[j];
+        if(selectedId){
+            if(id===selectedId){
+                alert("You have chosen");
+                return;
+            }
+        }
+    }
     selectedCount++;
     selectedCards[selectedCount - 1] = id;
     if (selectedCount === 3) {
         $.getJSON("api/cardsOnTable/checkTableCards/?id=" + currentGame
                 + "&card1=" + selectedCards[0]
                 + "&card2=" + selectedCards[1]
-                + "&card3=" + selectedCards[2])
+                + "&card3=" + selectedCards[2]
+                + "&userName="+currentUser)
                 .done(function (data) {
                     var valid = true;
                     if (valid) {
                         selectedCount = 0;
                         selectedCards = [];
                         // Replace the old cards with new cards
-                        alert(data.status);
+                        //alert(data.status);
                         //
                         showCardsOnTable("#games", data.cards);
                         showCardsOnTable("#setTable", data.setCards);
@@ -177,28 +219,8 @@ function checkGameRules(id) {
             console.log("Not Found");
         });
     }
-//    console.log(selectedCount);
-//    if (selectedCount < 3) {
-//        imageurl[selectedCount] = id;
-//        console.log(imagefirsturl.length);
-//
-////to get original index of the original array
-//        for (var i = 0; i <= imagefirsturl.length; i++) {
-//            var selectedCountt = 0;
-//            if (imagefirsturl[i].toString() === imageurl[selectedCount].toString()) {
-//                imageurlpointingplace[selectedCountt] = i;
-//                console.log(imageurlpointingplace.toString());
-//                selectedCountt++;
-//            }
-//        }
-//        //
-//        console.log(imageurl[selectedCount]);
-//    }
-//    else {
-//        alert("" + imageurlpointingplace[0] + imageurlpointingplace[1] + imageurlpointingplace[2] + "You have chosen three times");
-//    }
-//    selectedCount++;
-//    return;
+    $("#id_current_selected").empty();
+    $("#id_current_selected").append(selectedCount + " Selected");
 }
 
 $(function () {
@@ -241,6 +263,16 @@ $(function () {
     });
     
     $("#id_back_to_dashboard").on("click", function () {
+//        $.getJSON("api/cardsOnTable/getTableCards/?id=" + currentGame + "&userName=" +currentUser )
+//                .done(function (data) {
+//                    $("#id_current_game").empty();
+//                    $("#id_current_game").append(currentGame);
+//                    showCardsOnTable("#games", data.cards);
+//                    showCardsOnTable("#setTable", data.setCards);
+//                    showUsersOnTable("#userTable", data.onlineUsers);
+//                }).fail(function () {
+//            console.log("Not Found");
+//        });
         currentGame=null;
         $.mobile.navigate("#page_dashboard");
     });

@@ -4,13 +4,13 @@ import com.CATest.Team1.Model.Card;
 import com.CATest.Team1.Model.CardOnTable;
 import com.CATest.Team1.Model.Game;
 import com.CATest.Team1.Model.SetEngine;
-import com.CATest.Team1.service.GameService;
+import com.CATest.Team1.Model.User;
 import com.CATest.Team1.service.GameServiceImpl;
+import java.math.BigDecimal;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.servlet.http.HttpServlet;
 import javax.ws.rs.GET;
@@ -29,25 +29,24 @@ public class TableServlet extends HttpServlet {
     @GET
     @Produces("application/json")
     @Path("/getTableCards")
-    public String showTableCards(@Context UriInfo info) {
+    public String showTableCards(@Context UriInfo info) throws Exception {
         CardOnTable cardOnTable = null;
-        String id = info.getQueryParameters().getFirst("id");
-        if (id != null) {
-            Game game = (gameService.getGame(id));
-            cardOnTable = game.getCardOnTable();
-            cardOnTable.showOnTable(false);
-        } else {
-            cardOnTable = new CardOnTable();
-            cardOnTable.showOnTable(true);
-        }
-        //cardOnDeck.getCards();
+        Game game = null;
         JsonObjectBuilder results = Json.createObjectBuilder();
         JsonArrayBuilder cards = Json.createArrayBuilder();
         JsonArrayBuilder setCards = Json.createArrayBuilder();
+        String id = info.getQueryParameters().getFirst("id");
+        String userName = info.getQueryParameters().getFirst("userName");
         if (id != null) {
-            Game game = (gameService.getGame(id));
+            game = (gameService.getGame(id));
+            User user = gameService.getUser(userName);
+            if (user != null) {
+                game.getUsersOnGame().addOnlineUser(user);
+            }
             cardOnTable = game.getCardOnTable();
             cardOnTable.showOnTable(false);
+        } else {
+            throw new Exception("Invalid Game");
         }
         for (Card card : cardOnTable.tableCard) {
             cards.add(card.toJson());
@@ -59,6 +58,7 @@ public class TableServlet extends HttpServlet {
         }
         results.add("cards", cards.build());
         results.add("setCards", setCards);
+        game.getGameData(results);
         return results.build().toString();
     }
 
@@ -71,9 +71,11 @@ public class TableServlet extends HttpServlet {
         int cardId1 = Integer.parseInt(info.getQueryParameters().getFirst("card1").toString());
         int cardId2 = Integer.parseInt(info.getQueryParameters().getFirst("card2").toString());
         int cardId3 = Integer.parseInt(info.getQueryParameters().getFirst("card3").toString());
+        String userName = info.getQueryParameters().getFirst("userName").toString();
         JsonObjectBuilder results = Json.createObjectBuilder();
         JsonArrayBuilder cards = Json.createArrayBuilder();
         JsonArrayBuilder setCards = Json.createArrayBuilder();
+        JsonArrayBuilder users = Json.createArrayBuilder();
 
         boolean valid = false;
         boolean success = true;
@@ -93,7 +95,11 @@ public class TableServlet extends HttpServlet {
                     cardOnTable.setNewCardOnTable(card1);
                     cardOnTable.setNewCardOnTable(card2);
                     cardOnTable.setNewCardOnTable(card3);
-
+                    
+                    User user=gameService.getUser(userName);
+                    if(game.getUsersOnGame().getOnlineUsers().containsKey(user.getUserName())){
+                        game.getUsersOnGame().addScore(user);
+                    }
                     for (Card card : cardOnTable.setGameCard) {
                         if (card != null) {
                             setCards.add(card.toJson());

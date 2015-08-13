@@ -53,7 +53,7 @@ $(document).ready(function () {
                 url = $form.attr("action");
         var data = {userName: userName, userPassword: password};
 
-        alert(JSON.stringify(data));
+        //alert(JSON.stringify(data));
         // Send the data using post
         $.ajax({
             type: "POST"

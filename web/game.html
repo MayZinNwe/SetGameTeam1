@@ -18,6 +18,7 @@
             <div data-role="header">
                 <h1>Log In</h1>
                 <a href="#main" data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
+                <a  href="#page_registration" class="ui-btn ui-shadow ui-corner-all ui-icon-power ui-btn-icon">Register</a>    
             </div>
             <div data-role="main" class="ui-content">
                 <form action="api/game/login/" id="loginForm">
@@ -38,7 +39,7 @@
                 <h1>Set Game</h1>
                 <a id="btnRefresh" data-icon="plus" class="ui-btn ui-shadow ui-corner-all ui-icon-plus ui-btn-left">Refresh</a>
                 <div class="ui-btn-right">
-                    
+
                     <a id="btnNewGame" data-icon="plus" class="ui-btn ui-shadow ui-corner-all ui-icon-plus">New Game</a>    
                     <a id="btnLogout" href="#main" data-icon="power" class="ui-btn ui-shadow ui-corner-all ui-icon-power ui-btn-icon-notext"></a>    
                 </div>
@@ -107,77 +108,92 @@
                 <a id="id_back_to_dashboard" data-icon="carat-l" class="ui-btn ui-shadow ui-corner-all ui-icon-plus">Back</a>
             </div>
             <div data-role="main" class="ui-content">
-                <div class="ui-grid-a">
-                    <div class="ui-block-a"><div style="height:100%"><h1 id="id_current_game"></h1>
+                <div class="ui-grid-b">
+                    <div class="ui-block-a">
+                        <div style="width:100%">
+                            <h1 id="id_current_game"></h1>
                             <table id="games" border="1">
-                            </table></div></div>
+                            </table>
+                        </div>
+                        
+                        <div style="width:100%">
+                            <h1 id="id_current_selected"></h1>
+                            <table id="selectedCards" border="0">
+                            </table>
+                        </div>
+                    </div>
+
                     <div class="ui-block-b"><div style="height:100%"><h1 id="id_completed_set">Set List</h1>
-                            <table id="setTable" border="1">
+                            <table id="setTable" border="0">
                             </table></div></div>
+                    <div class="ui-block-c"><div style="height:100%"><h1 id="id_user_list">User List(s)</h1>
+                            <ul id="userList" data-role="listview">
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div data-role="footer" data-position="fixed">
+                        <h1>ISS Team 1</h1>
+                        <!--<a href="#panelCompletedSet" data-icon="gear" class="ui-btn-left">Completed Set</a>-->
+                        <a href="#panelHintSet" data-icon="eye" class="ui-btn-right" id="btnHint">Show Hint</a>
+                    </div>
                 </div>
-            </div>
-            <div data-role="footer" data-position="fixed">
-                <h1>ISS Team 1</h1>
-                <!--<a href="#panelCompletedSet" data-icon="gear" class="ui-btn-left">Completed Set</a>-->
-                <a href="#panelHintSet" data-icon="eye" class="ui-btn-right" id="btnHint">Show Hint</a>
-            </div>
-        </div>
-        <div data-role="page" id="page_test">
-            <div data-role="header" data-position="fixed">
-                <!--<a href="#main" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-left" data-rel="back"></a>-->
-                <h1>Games</h1>
-                <a href="#" data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
-                <a href="#" data-icon="gear" class="ui-btn-right">Options</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                <ul data-role="listview" data-inset="true">
-                    <li><a href="#">
-                            <img src="images/01.gif" class="ui-li-thumb">
-                            <h2>iOS 6.1</h2>
-                            <p>Apple released iOS 6.1</p>
-                            <p class="ui-li-aside">iOS</p>
-                        </a></li>
-                    <li><a href="#">
-                            <img src="images/01.gif" class="ui-li-thumb">
-                            <h2>BlackBerry 10</h2>
-                            <p>BlackBerry launched the Z10 and Q10 with the new BB10 OS</p>
-                            <p class="ui-li-aside">BlackBerry</p>
-                        </a></li>
-                    <li><a href="#">
-                            <img src="images/01.gif" class="ui-li-thumb">
-                            <h2>WP 7.8</h2>
-                            <p>Nokia rolls out WP 7.8 to Lumia 800</p>
-                            <p class="ui-li-aside">Windows Phone</p>
-                        </a></li>
-                    <li><a href="#">
-                            <img src="images/01.gif" class="ui-li-thumb">
-                            <h2>Galaxy</h2>
-                            <p>New Samsung Galaxy Express</p>
-                            <p class="ui-li-aside">Samsung</p>
-                        </a></li>
-                    <li><a href="#">
-                            <img src="images/01.gif" class="ui-li-thumb">
-                            <h2>Nexus 7</h2>
-                            <p>Rumours about new full HD Nexus 7</p>
-                            <p class="ui-li-aside">Android</p>
-                        </a></li>
-                    <li><a href="#">
-                            <img src="images/01.gif" class="ui-li-thumb">
-                            <h2>Firefox OS</h2>
-                            <p>ZTE to launch Firefox OS smartphone at MWC</p>
-                            <p class="ui-li-aside">Firefox</p>
-                        </a></li>
-                    <li><a href="#">
-                            <img src="images/01.gif" class="ui-li-thumb">
-                            <h2>Tizen</h2>
-                            <p>First Samsung phones with Tizen can be expected in 2013</p>
-                            <p class="ui-li-aside">Tizen</p>
-                        </a></li>
-                </ul>
-            </div>
-            <div data-role="footer" data-position="fixed">
-                <h1>ISS Team 1</h1>
-            </div>
-        </div>
-    </body>
-</html>
+                <div data-role="page" id="page_test">
+                    <div data-role="header" data-position="fixed">
+                        <!--<a href="#main" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-left" data-rel="back"></a>-->
+                        <h1>Games</h1>
+                        <a href="#" data-icon="carat-l" data-iconpos="notext" data-rel="back"></a>
+                        <a href="#" data-icon="gear" class="ui-btn-right">Options</a>
+                    </div>
+                    <div data-role="main" class="ui-content">
+                        <ul data-role="listview" data-inset="true">
+                            <li><a href="#">
+                                    <img src="images/01.gif" class="ui-li-thumb">
+                                    <h2>iOS 6.1</h2>
+                                    <p>Apple released iOS 6.1</p>
+                                    <p class="ui-li-aside">iOS</p>
+                                </a></li>
+                            <li><a href="#">
+                                    <img src="images/01.gif" class="ui-li-thumb">
+                                    <h2>BlackBerry 10</h2>
+                                    <p>BlackBerry launched the Z10 and Q10 with the new BB10 OS</p>
+                                    <p class="ui-li-aside">BlackBerry</p>
+                                </a></li>
+                            <li><a href="#">
+                                    <img src="images/01.gif" class="ui-li-thumb">
+                                    <h2>WP 7.8</h2>
+                                    <p>Nokia rolls out WP 7.8 to Lumia 800</p>
+                                    <p class="ui-li-aside">Windows Phone</p>
+                                </a></li>
+                            <li><a href="#">
+                                    <img src="images/01.gif" class="ui-li-thumb">
+                                    <h2>Galaxy</h2>
+                                    <p>New Samsung Galaxy Express</p>
+                                    <p class="ui-li-aside">Samsung</p>
+                                </a></li>
+                            <li><a href="#">
+                                    <img src="images/01.gif" class="ui-li-thumb">
+                                    <h2>Nexus 7</h2>
+                                    <p>Rumours about new full HD Nexus 7</p>
+                                    <p class="ui-li-aside">Android</p>
+                                </a></li>
+                            <li><a href="#">
+                                    <img src="images/01.gif" class="ui-li-thumb">
+                                    <h2>Firefox OS</h2>
+                                    <p>ZTE to launch Firefox OS smartphone at MWC</p>
+                                    <p class="ui-li-aside">Firefox</p>
+                                </a></li>
+                            <li><a href="#">
+                                    <img src="images/01.gif" class="ui-li-thumb">
+                                    <h2>Tizen</h2>
+                                    <p>First Samsung phones with Tizen can be expected in 2013</p>
+                                    <p class="ui-li-aside">Tizen</p>
+                                </a></li>
+                        </ul>
+                    </div>
+                    <div data-role="footer" data-position="fixed">
+                        <h1>ISS Team 1</h1>
+                    </div>
+                </div>
+                </body>
+                </html>

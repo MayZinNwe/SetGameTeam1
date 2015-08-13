@@ -12,6 +12,8 @@ package com.CATest.Team1.Model;
 public class User {
     private String userName;
     private String userPassword;
+    long totalScore;
+    long totalTimePlayed;
     
     public User() {
     
@@ -37,6 +39,22 @@ public class User {
         this.userName = userName;
     }
 
+    public long getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(long totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public long getTotalTimePlayed() {
+        return totalTimePlayed;
+    }
+
+    public void setTotalTimePlayed(long totalTimePlayed) {
+        this.totalTimePlayed = totalTimePlayed;
+    }
+    
     @Override
     public String toString() {
         return "User{" + "userName=" + userName + '}';

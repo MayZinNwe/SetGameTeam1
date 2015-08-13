@@ -31,7 +31,7 @@ public class GameServlet extends HttpServlet {
 
     @Inject
     private GameService gameService;
-     
+
     @POST
     @Path("/login")
     //@Consumes({"application/xml", "application/json"})
@@ -43,16 +43,16 @@ public class GameServlet extends HttpServlet {
         String password = user.getUserPassword();
         JsonObjectBuilder json = Json.createObjectBuilder();
         if (userName != null && password != null) {
-            if(gameService.isValid(user)){
+            if (gameService.isValid(user)) {
                 json.add("success", true);
-            }else{
+            } else {
                 json.add("success", false);
                 json.add("error", "User name was not found");
             }
         }
         return json.build().toString();
     }
-    
+
     @POST
     @Path("/register")
     //@Consumes({"application/xml", "application/json"})
@@ -66,33 +66,36 @@ public class GameServlet extends HttpServlet {
         if (userName != null && password != null) {
             json.add("userName", userName);
             json.add("password", password);
-            if(gameService.addUser(user)){
+            if (gameService.addUser(user)) {
                 json.add("success", true);
-                
-            }else{
+
+            } else {
                 json.add("success", false);
                 json.add("error", "Duplicate user name found");
             }
         }
         return json.build().toString();
     }
-    
+
     @POST
     @Path("/createGame")
     //@Consumes({"application/xml", "application/json"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces(MediaType.APPLICATION_JSON)
     public String createGame(Game game) {
-        //@PathParam("username") String userName
-        String description = game.getDescription();
-        int maximumPlayer = game.getMaximumPlayer();
         JsonObjectBuilder json = Json.createObjectBuilder();
-        if (description != null && maximumPlayer >=0) {
-            Game newGame = gameService.createGame(new User(game.getCreator()));
-            newGame.setDescription(description);
-            newGame.setMaximumPlayer(maximumPlayer);
-            newGame.toJson().toString();
-            json.add("success", true);
+        try {
+            String description = game.getDescription();
+            int maximumPlayer = game.getMaximumPlayer();
+            if (description != null && maximumPlayer >= 0) {
+                Game newGame = gameService.createGame(new User(game.getCreator()));
+                newGame.setDescription(description);
+                newGame.setMaximumPlayer(maximumPlayer);
+                newGame.toJson().toString();
+                json.add("success", true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return json.build().toString();
     }
@@ -100,7 +103,7 @@ public class GameServlet extends HttpServlet {
     @GET
     @Produces("application/json")
     @Path("/getExistingGames")
-    public String  getExistingGames() {
+    public String getExistingGames() {
         return gameService.toJson().toString();
     }
 
@@ -164,7 +167,7 @@ public class GameServlet extends HttpServlet {
     @GET
     @Produces(value = "application/json")
     @Path(value = "/openExistingGame")
-    public String  doOpenExistingGame(@Context UriInfo info) {
+    public String openExistingGame(@Context UriInfo info) {
         String id = info.getQueryParameters().getFirst("id");
         if (id != null) {
             gameService.getGame(id).toJson().toString();
