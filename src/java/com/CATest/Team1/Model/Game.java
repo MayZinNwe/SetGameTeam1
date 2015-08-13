@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
@@ -12,9 +13,10 @@ public class Game {
     private Date createdDate;
     private String creator;
     private CardOnTable cardOnTable;
+    private UsersOnGame usersOnGame;
     private String description;
     private int maximumPlayer;
-
+    
     public String getDescription() {
         return description;
     }
@@ -65,14 +67,37 @@ public class Game {
     public void setCreator(String creator) {
         this.creator = creator;
     }
+
+    public UsersOnGame getUsersOnGame() {
+        return usersOnGame;
+    }
+
+    public void setUsersOnGame(UsersOnGame usersOnGame) {
+        this.usersOnGame = usersOnGame;
+    }
     
     public Game(String creator) {
         id = Long.toString(Calendar.getInstance().getTimeInMillis());
         cardOnTable = new CardOnTable();
+        usersOnGame=new UsersOnGame();
         createdDate = Calendar.getInstance().getTime();
         this.creator = creator;
     }
 
+    public JsonArrayBuilder getGameData(JsonObjectBuilder parentJsonObject){
+        JsonArrayBuilder gameData = Json.createArrayBuilder();
+        parentJsonObject.add("usersCount", usersOnGame.getOnlineUsers().size());
+        getUsersOnGame().getOnlineUsers().values().stream().forEach((user) -> {
+            JsonObjectBuilder userData = Json.createObjectBuilder();
+            UserScore userScore=usersOnGame.getUsersScore().get(user.getUserName());
+            userData.add("name", user.getUserName());
+            userData.add("score", userScore.getScore());
+            gameData.add(userData);
+        });
+        parentJsonObject.add("onlineUsers", gameData);
+        return gameData;
+    }
+    
     public JsonObject toJson() {
         JsonObjectBuilder gameData = Json.createObjectBuilder();
         gameData.add("id", id);
@@ -80,9 +105,11 @@ public class Game {
         gameData.add("date", createdDate.toString());
         gameData.add("description", description);
         gameData.add("maximumPlayer", maximumPlayer);
+        gameData.add("userCount", usersOnGame.getOnlineUsers().size());
         return gameData.build();
     }
-
+    
+    
     @Override
     public String toString() {
         return "Game{" + "id=" + id + ", createdDate=" + createdDate + ", creator=" + creator + ", cardOnTable=" + cardOnTable + ", description=" + description + ", maximumPlayer=" + maximumPlayer + '}';
